@@ -8,7 +8,7 @@
     table {
       margin: 20px auto;
       border-collapse: collapse;
-      width: 60%;
+      width: 70%;
       background: #fff;
     }
     th, td {
@@ -21,6 +21,11 @@
       color: white;
     }
     tr:nth-child(even) { background: #f9f9f9; }
+    .grade-A { color: green; font-weight: bold; }
+    .grade-B { color: blue; font-weight: bold; }
+    .grade-C { color: orange; font-weight: bold; }
+    .grade-D { color: brown; font-weight: bold; }
+    .grade-F { color: red; font-weight: bold; }
   </style>
 </head>
 <body>
@@ -32,6 +37,8 @@
         <th>Student Name</th>
         <th>Score</th>
         <th>Total Questions</th>
+        <th>Percentage</th>
+        <th>Grade</th>
       </tr>
     </thead>
     <tbody id="reportBody"></tbody>
@@ -40,21 +47,34 @@
   <a href="index.html">⬅ Back to Home</a>
 
   <script>
+    function getGrade(percentage) {
+      if (percentage >= 70) return { grade: "A", cls: "grade-A" };
+      if (percentage >= 60) return { grade: "B", cls: "grade-B" };
+      if (percentage >= 50) return { grade: "C", cls: "grade-C" };
+      if (percentage >= 40) return { grade: "D", cls: "grade-D" };
+      return { grade: "F", cls: "grade-F" };
+    }
+
     let results = JSON.parse(localStorage.getItem("cbtResults")) || [];
     let tbody = document.getElementById("reportBody");
 
     if (results.length === 0) {
-      tbody.innerHTML = "<tr><td colspan='3'>No results yet</td></tr>";
+      tbody.innerHTML = "<tr><td colspan='5'>No results yet</td></tr>";
     } else {
       results.forEach(r => {
+        let percentage = Math.round((r.score / r.total) * 100);
+        let { grade, cls } = getGrade(percentage);
+
         let row = `<tr>
           <td>${r.name}</td>
           <td>${r.score}</td>
           <td>${r.total}</td>
+          <td>${percentage}%</td>
+          <td class="${cls}">${grade}</td>
         </tr>`;
         tbody.innerHTML += row;
       });
     }
   </script>
 </body>
-  </html>
+</html>
