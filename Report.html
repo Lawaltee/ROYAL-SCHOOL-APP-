@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Report Card - ROYAL SCHOOL APP</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; background: #f4f4f4; }
+    h1 { color: #2c3e50; }
+    table {
+      margin: 20px auto;
+      border-collapse: collapse;
+      width: 60%;
+      background: #fff;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background: #3498db;
+      color: white;
+    }
+    tr:nth-child(even) { background: #f9f9f9; }
+  </style>
+</head>
+<body>
+  <h1>Report Card</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Student Name</th>
+        <th>Score</th>
+        <th>Total Questions</th>
+      </tr>
+    </thead>
+    <tbody id="reportBody"></tbody>
+  </table>
+
+  <a href="index.html">⬅ Back to Home</a>
+
+  <script>
+    let results = JSON.parse(localStorage.getItem("cbtResults")) || [];
+    let tbody = document.getElementById("reportBody");
+
+    if (results.length === 0) {
+      tbody.innerHTML = "<tr><td colspan='3'>No results yet</td></tr>";
+    } else {
+      results.forEach(r => {
+        let row = `<tr>
+          <td>${r.name}</td>
+          <td>${r.score}</td>
+          <td>${r.total}</td>
+        </tr>`;
+        tbody.innerHTML += row;
+      });
+    }
+  </script>
+</body>
+  </html>
